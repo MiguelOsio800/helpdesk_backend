@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'reporte.apps.ReporteConfig',   
     'authentication',   
     'rest_framework_simplejwt',  
+    'corsheaders',
 ]  
 
 MIDDLEWARE = [  
@@ -51,8 +52,15 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',  
     'django.contrib.auth.middleware.AuthenticationMiddleware',  
     'django.contrib.messages.middleware.MessageMiddleware',  
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',  
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', 
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware', 
 ]  
+
+# Permitir el origen de Angular
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",  # URL del frontend en desarrollo
+]
 
 ROOT_URLCONF = 'helpdesk.urls'  
 
@@ -82,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',  
         'NAME': 'helpdesk_db',  # Nombre de la base de datos que acabas de crear  
         'USER': 'postgres',      # Usuario de postgres (o el que hayas creado)  
-        'PASSWORD': '123',  # Contraseña de postgres (o la que hayas creado)  
+        'PASSWORD': '   ',  # Contraseña de postgres (o la que hayas creado)  
         'HOST': 'localhost',  
         'PORT': '5432',  
     }  
