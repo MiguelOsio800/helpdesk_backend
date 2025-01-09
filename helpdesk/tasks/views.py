@@ -1,8 +1,16 @@
 # tasks/views.py  
 from rest_framework import viewsets  
-from .models import Task  # Asegúrate de tener este modelo definido  
-from .serializers import TaskSerializer  # Asegúrate de tener este serializer definido  
+from .models import Task, Prioridad, Status  # Incluir Status  
+from .serializers import TaskSerializer, PrioridadSerializer, StatusSerializer  # Incluir StatusSerializer  
 
 class TaskViewSet(viewsets.ModelViewSet):  
-    queryset = Task.objects.all()  # Esto obtiene todos los objetos de Task de la base de datos  
-    serializer_class = TaskSerializer  # Especifica el serializer para convertir el modelo a JSON
+    queryset = Task.objects.all()  
+    serializer_class = TaskSerializer  
+
+class PrioridadViewSet(viewsets.ModelViewSet):  
+    queryset = Prioridad.objects.all()  
+    serializer_class = PrioridadSerializer  
+
+class StatusViewSet(viewsets.ModelViewSet):  # Añadir el viewset para Status  
+    queryset = Status.objects.all()  
+    serializer_class = StatusSerializer
