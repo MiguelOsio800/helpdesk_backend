@@ -1,7 +1,7 @@
 # tasks/views.py  
 from rest_framework import viewsets  
-from .models import Task, Prioridad, Status  # Incluir Status  
-from .serializers import TaskSerializer, PrioridadSerializer, StatusSerializer  # Incluir StatusSerializer  
+from .models import Task, Prioridad, Status  
+from .serializers import TaskSerializer, PrioridadSerializer, StatusSerializer  
 
 class TaskViewSet(viewsets.ModelViewSet):  
     queryset = Task.objects.all()  
@@ -11,6 +11,6 @@ class PrioridadViewSet(viewsets.ModelViewSet):
     queryset = Prioridad.objects.all()  
     serializer_class = PrioridadSerializer  
 
-class StatusViewSet(viewsets.ModelViewSet):  # Añadir el viewset para Status  
+class StatusViewSet(viewsets.ModelViewSet):  
     queryset = Status.objects.all()  
     serializer_class = StatusSerializer
