@@ -6,12 +6,18 @@ class Area(models.Model):
 
     def __str__(self):  
         return self.nombre  
+    
+    class Meta:
+        verbose_name_plural = "Area"
 
 class Rol(models.Model):  
     nombre = models.CharField(max_length=50, unique=True)  
 
     def __str__(self):  
         return self.nombre  
+    
+    class Meta:
+        verbose_name_plural = "Rol"
 
 class Usuario(models.Model):  
     nombres = models.CharField(max_length=50)  
@@ -22,3 +28,6 @@ class Usuario(models.Model):
 
     def __str__(self):  
         return f"{self.nombres} {self.apellidos} - {self.rol.nombre}"
+    
+    class Meta:
+        verbose_name_plural = "Usuario"
