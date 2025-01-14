@@ -1,5 +1,8 @@
 from django.db import models  
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.hashers import make_password
+
+
 
 class Area(models.Model):  
     nombre = models.CharField(max_length=100)  
@@ -19,12 +22,14 @@ class Rol(models.Model):
     class Meta:
         verbose_name_plural = "Rol"
 
-class Usuario(AbstractUser):  
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, related_name='usuarios', null=True)  # Relación con Area  
-    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='usuarios',null=True)  # Relación con Rol  
+class Usuario(AbstractUser):
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, related_name='usuarios', null=True)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='usuarios', null=True)
+    password = models.CharField(max_length=128, default=make_password('default_password'))
+    username = models.CharField(max_length=150, unique=True, default='default_username')
 
-    def __str__(self):  
-        return f"{self.first_name} {self.last_name} - {self.rol.nombre if self.rol else "Sin rol"}"
-    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.rol.nombre if self.rol else 'Sin rol'}"
+
     class Meta:
         verbose_name_plural = "Usuario"
