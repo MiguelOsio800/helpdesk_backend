@@ -16,6 +16,6 @@ class UsuarioAdmin(admin.ModelAdmin):
     list_filter = ('rol', 'area')  # Permitir filtrar por rol y área en el panel  
 
 # Registro de modelos en el panel de administración  
-admin.site.register(Usuario, UsuarioAdmin)  
+admin.site.register(Usuario)  
 admin.site.register(Area, AreaAdmin)  # Registrar el modelo Area  
 admin.site.register(Rol, RolAdmin)  # Registrar el modelo Rol

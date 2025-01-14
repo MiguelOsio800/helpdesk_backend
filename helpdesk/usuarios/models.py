@@ -1,4 +1,5 @@
 from django.db import models  
+from django.contrib.auth.models import AbstractUser
 
 class Area(models.Model):  
     nombre = models.CharField(max_length=100)  
@@ -18,15 +19,12 @@ class Rol(models.Model):
     class Meta:
         verbose_name_plural = "Rol"
 
-class Usuario(models.Model):  
-    nombres = models.CharField(max_length=50)  
-    apellidos = models.CharField(max_length=50)  
-    area = models.ForeignKey(Area, on_delete=models.CASCADE, related_name='usuarios')  # Relación con Area  
-    correo = models.EmailField(unique=True)  
-    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='usuarios')  # Relación con Rol  
+class Usuario(AbstractUser):  
+    area = models.ForeignKey(Area, on_delete=models.CASCADE, related_name='usuarios', null=True)  # Relación con Area  
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='usuarios',null=True)  # Relación con Rol  
 
     def __str__(self):  
-        return f"{self.nombres} {self.apellidos} - {self.rol.nombre}"
+        return f"{self.first_name} {self.last_name} - {self.rol.nombre if self.rol else "Sin rol"}"
     
     class Meta:
         verbose_name_plural = "Usuario"

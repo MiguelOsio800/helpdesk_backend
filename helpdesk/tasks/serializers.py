@@ -15,11 +15,10 @@ class StatusSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):  
     area_nombre = serializers.CharField(source='area.nombre', read_only=True)  
-    usuario_nombre = serializers.CharField(source='usuario.nombres', read_only=True)  # Cambiado a 'nombres'  
+    usuario_nombre = serializers.CharField(source='usuario.nombres', read_only=True)  
     status_nombre = serializers.CharField(source='status.estado', read_only=True)  
     prioridad_nombre = serializers.CharField(source='prioridad.nivel', read_only=True)  
-    
-    tecnicos_nombres = serializers.SerializerMethodField()  # Usar un método para obtener los nombres  
+    tecnicos_nombres = serializers.SerializerMethodField()  
 
     class Meta:  
         model = Task  
@@ -40,4 +39,4 @@ class TaskSerializer(serializers.ModelSerializer):
         ]  
 
     def get_tecnicos_nombres(self, obj):  
-        return [f"{tecnico.nombres} {tecnico.apellidos}" for tecnico in obj.tecnicos.all()]  # Obtener los nombres completos
+        return [f"{tecnico.nombres} {tecnico.apellidos}" for tecnico in obj.tecnicos.all()]
