@@ -18,7 +18,6 @@ class Status(models.Model):  # Renombramos Estado a Status
         return self.estado  
     class Meta:
         verbose_name_plural = "Status"
-
 class Task(models.Model):  
     incidencia = models.CharField(max_length=200)  
     descripcion = models.TextField()  
@@ -31,5 +30,11 @@ class Task(models.Model):
     def __str__(self):  
         return self.incidencia
     
+    def save(self, *args, **kwargs):
+        if not self.status:  # Si no se proporciona un estado
+            pendiente_status, created = Status.objects.get_or_create(estado="Pendiente")
+            self.status = pendiente_status  # Asignar el estado "Pendiente"
+        super().save(*args, **kwargs)  # Llamar al método save original
+
     class Meta:
         verbose_name_plural = "Task"
