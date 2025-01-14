@@ -22,10 +22,11 @@ class LoginView(APIView):
             access_token["user_data"] = {
                 "id": user.id,
                 "username": user.username,
-                "nombres": user.nombres,
-                "apellidos": user.apellidos,
-                "email": user.correo,
-                "rol": user.rol
+                "nombres": user.first_name,
+                "apellidos": user.last_name,
+                "email": user.email,
+                "rol": user.rol.nombre if user.rol else None,
+                "area": user.area.nombre if user.area else None,
             }
             return Response({  
                 'access_token': str(access_token),  

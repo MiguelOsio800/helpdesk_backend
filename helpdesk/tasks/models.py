@@ -11,7 +11,7 @@ class Prioridad(models.Model):
     class Meta:
         verbose_name_plural = "Prioridad"
 
-class Status(models.Model):  # Renombramos Estado a Status  
+class Status(models.Model):  
     estado = models.CharField(max_length=20, unique=True)  # Campo de texto para estado  
 
     def __str__(self):  
@@ -23,7 +23,7 @@ class Task(models.Model):
     descripcion = models.TextField()  
     area = models.ForeignKey(Area, on_delete=models.CASCADE)  
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)  
-    tecnicos = models.ManyToManyField(Usuario, related_name='tecnico_tasks', null=True, blank=True)  
+    tecnicos = models.ManyToManyField(Usuario, related_name='tecnico_tasks', blank=True) 
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True)  # Relación a Status  
     prioridad = models.ForeignKey(Prioridad, on_delete=models.SET_NULL, null=True, blank=True)  # Relación a Prioridad  
 
