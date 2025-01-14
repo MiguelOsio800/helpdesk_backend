@@ -149,3 +149,5 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,                    # Rotar tokens de actualización  
     'BLACKLIST_AFTER_USE': True,                       # Agregar a la lista negra después de su uso  
 }
+
+AUTH_USER_MODEL = "usuarios.Usuario"

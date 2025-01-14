@@ -18,9 +18,17 @@ class LoginView(APIView):
 
         if user is not None:  # Usuario encontrado  
             refresh = RefreshToken.for_user(user)  
-            access_token = str(refresh.access_token)  
+            access_token = refresh.access_token  
+            access_token["user_data"] = {
+                "id": user.id,
+                "username": user.username,
+                "nombres": user.nombres,
+                "apellidos": user.apellidos,
+                "email": user.correo,
+                "rol": user.rol
+            }
             return Response({  
-                'access_token': access_token,  
+                'access_token': str(access_token),  
                 'refresh_token': str(refresh)  # Devolver también el refresh token  
             })  
         else:  # Credenciales inválidas  
