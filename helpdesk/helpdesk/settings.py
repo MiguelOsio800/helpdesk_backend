@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'authentication',   
     'rest_framework_simplejwt',  
     'corsheaders',
+    'django_extensions',
 ]  
 
 MIDDLEWARE = [  
@@ -119,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'  
 
-TIME_ZONE = 'UTC'  
+TIME_ZONE = 'America/Caracas' 
 
 USE_I18N = True  
 
