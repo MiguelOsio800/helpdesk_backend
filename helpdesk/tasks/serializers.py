@@ -1,7 +1,12 @@
 # tasks/serializers.py  
 from rest_framework import serializers  
-from .models import Task, Prioridad, Status, Clasificacion  
-from usuarios.models import Usuario  
+from django.contrib.auth.models import User  # Importamos el modelo User  
+from .models import Task, Prioridad, Status, Clasificacion  # Manteniendo otras importaciones  
+
+class UserSerializer(serializers.ModelSerializer):  
+    class Meta:  
+        model = User  
+        fields = ['username']  # Solo retorna el campo username  
 
 class PrioridadSerializer(serializers.ModelSerializer):  
     class Meta:  
@@ -19,34 +24,10 @@ class ClasificacionSerializer(serializers.ModelSerializer):
         fields = '__all__'  
 
 class TaskSerializer(serializers.ModelSerializer):  
-    area_nombre = serializers.CharField(source='area.nombre', read_only=True)  
-    usuario_nombre = serializers.CharField(source='usuario.nombres', read_only=True)  
-    status_nombre = serializers.CharField(source='status.estado', read_only=True)  
-    prioridad_nombre = serializers.CharField(source='prioridad.nivel', read_only=True)  
-    clasificacion_tema = serializers.CharField(source='clasificacion.tema', read_only=True)  
-    tecnicos_nombres = serializers.SerializerMethodField()  
+    # Cambiar este campo para utilizar el serializador correcto  
+    usuario = UserSerializer(read_only=True)  # Utiliza el serializador User para el campo usuario  
+    tecnicos = UserSerializer(many=True, read_only=True)  # Suponiendo que la tarea puede tener varios técnicos asignados (ManyToMany)  
 
     class Meta:  
         model = Task  
-        fields = [  
-            'id',   
-            'incidencia',   
-            'descripcion',   
-            'area',   
-            'area_nombre',   
-            'usuario',   
-            'usuario_nombre',   
-            'tecnicos',   
-            'tecnicos_nombres',  
-            'status',   
-            'status_nombre',   
-            'prioridad',   
-            'prioridad_nombre',  
-            'fecha_creacion',  # Incluir fecha_creacion  
-            'fecha_final',  # Incluir fecha_final  
-            'clasificacion',  
-            'clasificacion_tema'  
-        ]  
-
-    def get_tecnicos_nombres(self, obj):  
-        return [f"{tecnico.nombres} {tecnico.apellidos}" for tecnico in obj.tecnicos.all()]
+        fields = ['incidencia', 'descripcion', 'area', 'usuario', 'tecnicos', 'status', 'prioridad', 'fecha_creacion', 'fecha_final']  # Especifica los campos deseados

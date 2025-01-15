@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',  
     'usuarios',  
     'tasks',  
-    'reporte.apps.ReporteConfig',   
+    'inventario',
     'authentication',   
     'rest_framework_simplejwt',  
     'corsheaders',
