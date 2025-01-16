@@ -15,9 +15,11 @@ class RolSerializer(serializers.ModelSerializer):
 
 # Serializador para el modelo Usuario  
 class UsuarioSerializer(serializers.ModelSerializer):  
+    rol_nombre = serializers.CharField(source='rol.nombre', read_only=True)
+
     class Meta:  
         model = Usuario  
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']  # Solo incluye los campos que solicitaste  
+        fields = ['id', 'username', 'first_name', 'last_name', 'email','rol', 'rol_nombre']  # Solo incluye los campos que solicitaste  
 
 # Serializador para el modelo Clasificacion  
 class ClasificacionSerializer(serializers.ModelSerializer):  
