@@ -20,7 +20,7 @@ class ClasificacionSerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):  
     area_nombre = serializers.CharField(source='area.nombre', read_only=True)  
-    usuario_nombre = serializers.CharField(source='usuario.nombres', read_only=True)  
+    usuario_nombre = serializers.CharField(source='usuario.first_name', read_only=True)  
     status_nombre = serializers.CharField(source='status.estado', read_only=True)  
     prioridad_nombre = serializers.CharField(source='prioridad.nivel', read_only=True)  
     clasificacion_tema = serializers.CharField(source='clasificacion.tema', read_only=True)  
