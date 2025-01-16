@@ -1,28 +1,30 @@
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from .models import Usuario, Area, Rol
-from .serializers import UsuarioSerializer, AreaSerializer, RolSerializer
+from rest_framework import viewsets  
+from rest_framework.response import Response  
+from .models import Usuario, Area, Rol, Clasificacion, Task  
+from .serializers import UsuarioSerializer, AreaSerializer, RolSerializer, ClasificacionSerializer, TaskSerializer  
 
-class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
+class UsuarioViewSet(viewsets.ModelViewSet):  
+    queryset = Usuario.objects.all()  
+    serializer_class = UsuarioSerializer  
 
-    # Agregamos una acción personalizada para filtrar usuarios por rol
-    @action(detail=False, methods=['get'], url_path='tecnicos')
-    def tecnicos(self, request):
-        # Filtrar usuarios cuyo rol sea "técnico"
-        rol_tecnico = Rol.objects.filter(nombre__iexact='tecnico').first()
-        if rol_tecnico:
-            usuarios_tecnicos = Usuario.objects.filter(rol=rol_tecnico)
-            serializer = self.get_serializer(usuarios_tecnicos, many=True)
-            return Response(serializer.data)
-        return Response([], status=200)
+    def list(self, request, *args, **kwargs):  
+        # Aquí puedes personalizar la query y filtrado si lo necesitas  
+        return super().list(request, *args, **kwargs) # Esto devolverá todos los usuarios con el nuevo serializer.  
+  
+class AreaViewSet(viewsets.ModelViewSet):  
+    queryset = Area.objects.all()  
+    serializer_class = AreaSerializer  
 
-class AreaViewSet(viewsets.ModelViewSet):
-    queryset = Area.objects.all()
-    serializer_class = AreaSerializer
+class RolViewSet(viewsets.ModelViewSet):  
+    queryset = Rol.objects.all()  
+    serializer_class = RolSerializer  
 
-class RolViewSet(viewsets.ModelViewSet):
-    queryset = Rol.objects.all()
-    serializer_class = RolSerializer
+# Nuevo ViewSet para Clasificaciones  
+class ClasificacionViewSet(viewsets.ModelViewSet):  
+    queryset = Clasificacion.objects.all()  
+    serializer_class = ClasificacionSerializer  
+
+# Nuevo ViewSet para Tareas  
+class TaskViewSet(viewsets.ModelViewSet):  
+    queryset = Task.objects.all()  
+    serializer_class = TaskSerializer
