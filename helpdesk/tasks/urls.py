@@ -7,7 +7,8 @@ router = DefaultRouter()
 router.register(r'tasks', TaskViewSet)  
 router.register(r'prioridades', PrioridadViewSet)  
 router.register(r'status', StatusViewSet)  # Registro del EndPoint para Status  
-router.register(r'clasificaciones', ClasificacionViewSet)  # Registro del EndPoint para Clasificaciones  
+router.register(r'clasificaciones', ClasificacionViewSet)
+
 
 urlpatterns = [  
     path('', include(router.urls)),  
