@@ -6,9 +6,11 @@ router = DefaultRouter()
 router.register(r'usuarios', UsuarioViewSet)  
 router.register(r'areas', AreaViewSet)  
 router.register(r'roles', RolViewSet)  
-router.register(r'clasificaciones', ClasificacionViewSet)  # Nueva ruta para Clasificaciones  
-router.register(r'tareas', TaskViewSet)  # Nueva ruta para Tareas  
+router.register(r'clasificaciones', ClasificacionViewSet)  
+router.register(r'tareas', TaskViewSet)  
 
 urlpatterns = [  
     path('', include(router.urls)),  
-]
+    path('tecnicos/', UsuarioViewSet.as_view({'get': 'list_tecnicos'}), name='usuarios-tecnicos'),
+    path('tecnologia/', UsuarioViewSet.as_view({'get': 'list_tecnologia'}), name='usuarios-tecnicos'),
+]  

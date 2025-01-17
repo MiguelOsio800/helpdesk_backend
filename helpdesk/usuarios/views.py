@@ -8,8 +8,25 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer  
 
     def list(self, request, *args, **kwargs):  
-        # Aquí puedes personalizar la query y filtrado si lo necesitas  
-        return super().list(request, *args, **kwargs) # Esto devolverá todos los usuarios con el nuevo serializer.  
+        return super().list(request, *args, **kwargs)  # Esto devolverá todos los usuarios  
+
+    def list_tecnicos(self, request, *args, **kwargs):  
+        # Filtramos los usuarios que tienen rol técnico  
+        rol_tecnico = Rol.objects.filter(nombre='tecnico').first()  # Asegúrate de que 'tecnico' es el nombre correcto del rol.  
+        if rol_tecnico:  
+            usuarios_tecnicos = self.queryset.filter(rol=rol_tecnico)  
+            serializer = self.get_serializer(usuarios_tecnicos, many=True)  
+            return Response(serializer.data)  
+        return Response([])  # Devuelve una lista vacía si no hay técnicos  
+    
+    def list_tecnologia(self, request, *args, **kwargs):  
+        # Filtramos los usuarios que tienen el area tecnología  
+        area_tecnologia = Area.objects.filter(nombre='Tecnologia').first()  # Asegúrate de que 'tecnico' es el nombre correcto del rol.  
+        if area_tecnologia:  
+            usuarios_tecnologia = self.queryset.filter(area=area_tecnologia)  
+            serializer = self.get_serializer(usuarios_tecnologia, many=True)  
+            return Response(serializer.data)  
+        return Response([])  # Devuelve una lista vacía si no hay técnicos  
   
 class AreaViewSet(viewsets.ModelViewSet):  
     queryset = Area.objects.all()  
@@ -19,12 +36,10 @@ class RolViewSet(viewsets.ModelViewSet):
     queryset = Rol.objects.all()  
     serializer_class = RolSerializer  
 
-# Nuevo ViewSet para Clasificaciones  
 class ClasificacionViewSet(viewsets.ModelViewSet):  
     queryset = Clasificacion.objects.all()  
     serializer_class = ClasificacionSerializer  
 
-# Nuevo ViewSet para Tareas  
 class TaskViewSet(viewsets.ModelViewSet):  
     queryset = Task.objects.all()  
     serializer_class = TaskSerializer
