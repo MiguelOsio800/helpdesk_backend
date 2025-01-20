@@ -63,7 +63,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'clasificacion',  
             'clasificacion_tema'  
         ]  
-    
+
     def get_tecnicos_nombres(self, obj):  
         # Método para obtener los nombres completos de los técnicos  
-        return [f"{tecnico.nombres} {tecnico.apellidos}" for tecnico in obj.tecnicos.all()]
+        return [f"{tecnico.first_name} {tecnico.last_name}" for tecnico in obj.tecnicos.all()]
