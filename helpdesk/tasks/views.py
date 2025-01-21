@@ -5,6 +5,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response  
 from .models import Task, Prioridad, Status, Clasificacion  
 from .serializers import TaskSerializer, PrioridadSerializer, StatusSerializer, ClasificacionSerializer  
+from rest_framework.decorators import api_view
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .models import Task, Informe
+from .serializers import InformeSerializer
 
 ###############################################################################  
 ### ViewSet para la clase Task que maneja las tareas del sistema          ###  
@@ -56,3 +61,57 @@ class StatusViewSet(viewsets.ModelViewSet):
 class ClasificacionViewSet(viewsets.ModelViewSet):  
     queryset = Clasificacion.objects.all()  # Consulta para obtener todas las instancias de Clasificacion  
     serializer_class = ClasificacionSerializer  # Serializador asociado con el modelo Clasificacion
+
+class InformeViewSet(viewsets.ModelViewSet):
+    queryset = Informe.objects.all()
+    serializer_class = InformeSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        task_id = self.request.query_params.get('task_id')
+        if task_id:
+            queryset = queryset.filter(task_id=task_id)
+        return queryset
+
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+    @action(detail=True, methods=['put'], url_path='update-technical-status-classification')
+    def update_technical_status_classification(self, request, pk=None):
+        task = self.get_object()
+        serializer = self.get_serializer(task, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            # Crear informes vacíos si se han asignado técnicos nuevos
+            for tecnico in task.tecnicos.all():
+                Informe.objects.get_or_create(task=task, usuario=tecnico, defaults={
+                    'area': task.area,
+                    'status': 'Pendiente'  # Status por defecto
+                })
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'POST'])
+def completar_informe(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    informes = task.informes.order_by('id')
+    informe_completado = False
+
+    for informe in informes:
+        if informe.usuario == request.user:
+            if informe_completado:
+                if request.method == 'POST':
+                    serializer = InformeSerializer(informe, data=request.data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data, status=status.HTTP_200_OK)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    serializer = InformeSerializer(informe)
+                return Response(serializer.data)
+            else:
+                informe_completado = informe.completado
+    return Response({'detail': 'Informe no encontrado o no autorizado'}, status=status.HTTP_404_NOT_FOUND)

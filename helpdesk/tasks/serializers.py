@@ -1,6 +1,13 @@
 from rest_framework import serializers  # Importamos el módulo serializers de Django REST Framework  
 from .models import Task, Prioridad, Status, Clasificacion  # Importamos los modelos necesarios  
 from usuarios.models import Usuario  # Importamos el modelo Usuario  
+from .models import Informe
+
+class InformeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Informe
+        fields = ['id', 'task', 'area', 'usuario', 'equipo', 'numero_de_bien', 'motivo', 'solucion', 'status', 'observacion', 'completado']
+
 
 ##################################  
 ##### Clase PrioridadSerializer ##   
