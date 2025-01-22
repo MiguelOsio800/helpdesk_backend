@@ -1,33 +1,31 @@
 from rest_framework import serializers  
-from .models import Task, Prioridad, Status, Clasificacion  
+from .models import Task, Prioridad, Status, Clasificacion, Usuario  # Asegúrate de importar Usuario  
 
 class PrioridadSerializer(serializers.ModelSerializer):  
     class Meta:  
-        model = 'Prioridad'  # Asegúrate de que el modelo está definido  
+        model = Prioridad  # Cambiado de string a referencia del modelo  
         fields = '__all__'  
-
 
 class StatusSerializer(serializers.ModelSerializer):  
     class Meta:  
         model = Status  
         fields = '__all__'  
 
-
 class ClasificacionSerializer(serializers.ModelSerializer):  
     class Meta:  
         model = Clasificacion  
         fields = '__all__'  
 
-
 class TaskSerializer(serializers.ModelSerializer):  
     area_nombre = serializers.CharField(source='area.nombre', read_only=True)  
     usuario_nombre = serializers.CharField(source='usuario.first_name', read_only=True)  
     status_nombre = serializers.CharField(source='status.estado', read_only=True)  
-    prioridad_nombre = serializers.CharField(source='prioridad.nivel', read_only=True)  # Asegúrate de que el campo 'nivel' existe en Prioridad  
+    prioridad_nombre = serializers.CharField(source='prioridad.nivel', read_only=True)  # Verifica si el campo 'nivel' existe en Prioridad  
     clasificacion_tema = serializers.CharField(source='clasificacion.clasificacion', read_only=True)  
     tecnicos_nombres = serializers.SerializerMethodField()  
 
-    tecnicos = serializers.PrimaryKeyRelatedField(many=True, queryset='Usuario.objects.all()', required=False)  # Asegúrate de que el modelo Usuario está definido  
+    # Aquí corrige el queryset  
+    tecnicos = serializers.PrimaryKeyRelatedField(many=True, queryset=Usuario.objects.all(), required=False)  # Cambiado de string a queryset real  
     prioridad = serializers.PrimaryKeyRelatedField(queryset=Prioridad.objects.all(), required=False)  
 
     class Meta:  
@@ -62,7 +60,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
         prioridad = validated_data.pop('prioridad', None)  
         if prioridad is not None:  
-            instance.prioridad = prioridad  
+            instance.prioridad = prioridad  # Asegúrate de que prioridad sea un objeto válido  
 
         for attr, value in validated_data.items():  
             setattr(instance, attr, value)  

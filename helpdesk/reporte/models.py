@@ -4,9 +4,9 @@ from usuarios.models import Usuario, Area  # Importa Usuario y Area si son neces
 
 
 class Informe(models.Model):
-    task = models.ForeignKey(Task, related_name='reporte_informes', on_delete=models.CASCADE)  # Cambiado related_name
-    area = models.ForeignKey(Area, related_name='reporte_areas', on_delete=models.CASCADE)  # Cambiado related_name
-    usuario = models.ForeignKey(Usuario, related_name='reporte_usuarios', on_delete=models.CASCADE)  # Cambiado related_name
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)  # Cambiado related_name
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)  # Cambiado related_name
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)  # Cambiado related_name
     equipo = models.CharField(max_length=200)
     numero_de_bien = models.CharField(max_length=100)
     solucion = models.TextField()
