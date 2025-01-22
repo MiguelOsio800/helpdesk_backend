@@ -1,6 +1,6 @@
 from django.contrib import admin  
-from .models import Task, Prioridad, Status, Clasificacion, Informe 
 
+# Definición de clases administrativas  
 class TaskAdmin(admin.ModelAdmin):  
     list_display = ('incidencia', 'descripcion', 'fecha_creacion', 'fecha_final', 'area', 'usuario', 'status', 'prioridad', 'clasificacion')  
     list_filter = ('area', 'status', 'prioridad', 'fecha_creacion', 'fecha_final')  
@@ -19,13 +19,13 @@ class ClasificacionAdmin(admin.ModelAdmin):
     list_display = ('clasificacion',)  
     search_fields = ('clasificacion',)  
 
-class InformeAdmin(admin.ModelAdmin): 
-    list_display = ('task', 'area', 'usuario', 'equipo', 'numero_de_bien', 'motivo', 'solucion', 'status', 'observacion', 'completado') 
-    search_fields = ('task__incidencia', 'usuario__username', 'status') 
-    list_filter = ('status', 'completado')
+# Función para registrar modelos  
+def register_models():  
+    from .models import Task, Prioridad, Status, Clasificacion  # Importar aquí para evitar circularidad  
+    admin.site.register(Task, TaskAdmin)  
+    admin.site.register(Prioridad, PrioridadAdmin)  
+    admin.site.register(Status, StatusAdmin)  
+    admin.site.register(Clasificacion, ClasificacionAdmin)  
 
-admin.site.register(Informe, InformeAdmin)
-admin.site.register(Task, TaskAdmin)  
-admin.site.register(Prioridad, PrioridadAdmin)  
-admin.site.register(Status, StatusAdmin)  
-admin.site.register(Clasificacion, ClasificacionAdmin)
+# Ejecutar la función de registro  
+register_models()

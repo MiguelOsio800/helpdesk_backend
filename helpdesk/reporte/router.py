@@ -1,11 +1,11 @@
-from django.urls import URLPattern
-from rest_framework.routers import DefaultRouter
+# router.py  
+from django.urls import path, include  
+from rest_framework.routers import DefaultRouter  
+from .views import ReporteViewSet  # Asegúrate que esto exista  
 
-from .views import ReporteViewSet
+router = DefaultRouter()  
+router.register(r'reportes', ReporteViewSet, basename='reporte')  # Registro del ViewSet de Reporte  
 
-# Create a router and register our ViewSets with it.
-router = DefaultRouter()
-router.register(r'reporte', ReporteViewSet, basename='reporte')
-
-
-urlpatterns = router.urls
+urlpatterns = [  
+    path('', include(router.urls)),  
+]
