@@ -3,7 +3,7 @@
 from datetime import timedelta  
 
 SIMPLE_JWT = {  
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Token de acceso expira en 30 minutos  
-    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=30),  # Token de refresco expira en 30 minutos  
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),  # Token de acceso expira en 8 horas  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Token de refresco expira en 1 día (puedes ajustarlo según tus necesidades)  
     'ROTATE_REFRESH_TOKENS': True,  
-}
+}  
