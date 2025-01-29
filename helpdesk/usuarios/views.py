@@ -34,6 +34,20 @@ class UsuarioViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(usuarios_tecnologia, many=True)  # Serializamos los usuarios filtrados  
             return Response(serializer.data)  # Devolvemos los datos serializados  
         return Response([])  # Devuelve una lista vacía si no hay técnicos  
+    def create(self, request, *args, **kwargs):  
+        print("Creando Usuario")
+        serializer = self.get_serializer(data=request.data)  
+        serializer.is_valid(raise_exception=True)  
+        usuario = serializer.save()  # Primero guardamos el usuario  
+        print(request.data['password'])
+        
+        # Establecemos la contraseña de manera segura  
+        if 'password' in request.data:  
+            print(request.data['password'])
+            usuario.set_password(request.data['password'])  # Encriptamos la contraseña  
+            usuario.save()  # Guardamos el usuario nuevamente  
+
+        return Response(serializer.data)  
 
 ##################################  
 ##### Clase AreaViewSet ##########  

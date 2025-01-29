@@ -29,7 +29,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:  
         model = Usuario  # Modelo que se va a serializar  
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'rol', 'rol_nombre']  # Solo incluye los campos que solicitaste  
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'rol', 'rol_nombre','password','area']  # Solo incluye los campos que solicitaste  
 
 ##########################################  
 ##### Clase ClasificacionSerializer ######  
