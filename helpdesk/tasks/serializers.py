@@ -27,6 +27,26 @@ class TaskSerializer(serializers.ModelSerializer):
     tecnicos = serializers.PrimaryKeyRelatedField(many=True, queryset=Usuario.objects.all(), required=False)  
     prioridad = serializers.PrimaryKeyRelatedField(queryset=Prioridad.objects.all(), required=False)  
 
+    def to_representation(self, tarea):
+       return {
+           'id': tarea.id,
+           'incidencia': tarea.incidencia,
+           'descripcion': tarea.descripcion,
+           'area': tarea.area.id,
+           'area_nombre': tarea.area.nombre,
+           'usuario': tarea.usuario.id,
+           'usuario_nombre': tarea.usuario.first_name,
+           'tecnicos': [tecnico.id for tecnico in tarea.tecnicos.all()],
+           'status': tarea.status.id,
+           'status_nombre': tarea.status.estado,
+           'prioridad': tarea.prioridad.id if tarea.prioridad != None else None,
+           'prioridad_nombre': tarea.prioridad.nivel if tarea.prioridad != None else 'Sin prioridad',
+           'fecha_creacion': tarea.fecha_creacion,
+           'fecha_final': tarea.fecha_final,
+           'clasificacion': tarea.clasificacion.id if tarea.clasificacion != None else None,
+           'clasificacion_tema': tarea.clasificacion.clasificacion if tarea.clasificacion != None else 'Sin clasificación',
+           'reporte': 'pendiente por miguel'
+       }
     class Meta:  
         model = Task  
         fields = [  
