@@ -6,7 +6,7 @@ from .serializers import TaskSerializer, PrioridadSerializer, StatusSerializer, 
 from rest_framework.decorators import api_view  
 from rest_framework import status  
 from django.shortcuts import get_object_or_404  
-from reporte.models import Informe  # Importar el modelo Informe
+from informes.models import Informe # Importar el modelo Informe
 
 class TaskViewSet(viewsets.ModelViewSet):  
     queryset = Task.objects.all()  

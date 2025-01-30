@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'rest_framework',  
     'usuarios',  
     'tasks',  
-    'reporte.apps.ReporteConfig',   
+    'informes.apps.InformesConfig',
     'authentication',   
     'rest_framework_simplejwt',  
-    'corsheaders',
-    'django_extensions',
-]  
+    'corsheaders',  
+    'django_extensions',  
+]
 
 MIDDLEWARE = [  
     'django.middleware.security.SecurityMiddleware',  

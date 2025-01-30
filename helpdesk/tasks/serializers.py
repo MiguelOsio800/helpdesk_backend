@@ -1,7 +1,7 @@
 from rest_framework import serializers  
 from .models import Task, Prioridad, Status, Clasificacion  
 from usuarios.models import Usuario  # Asegúrate de que esta línea apunte a la ubicación correcta  
-from reporte.models import Informe  # Importar el modelo Informe
+from informes.models import Informe
 
 class PrioridadSerializer(serializers.ModelSerializer):  
     class Meta:  
@@ -51,6 +51,8 @@ class TaskSerializer(serializers.ModelSerializer):
                    'id': informe.id,
                    'area': informe.area.id,
                    'usuario': informe.usuario.id,
+                   'usuario_nombre': informe.usuario.first_name,
+                   'usuario_apellido': informe.usuario.last_name,
                    'equipo': informe.equipo,
                    'numero_de_bien': informe.numero_de_bien,
                    'solucion': informe.solucion,
