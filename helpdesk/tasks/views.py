@@ -6,6 +6,7 @@ from .serializers import TaskSerializer, PrioridadSerializer, StatusSerializer, 
 from rest_framework.decorators import api_view  
 from rest_framework import status  
 from django.shortcuts import get_object_or_404  
+from reporte.models import Informe  # Importar el modelo Informe
 
 class TaskViewSet(viewsets.ModelViewSet):  
     queryset = Task.objects.all()  
@@ -18,6 +19,11 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():  
             serializer.save()  
+            # Crear informes vacíos si se han asignado técnicos nuevos
+            for tecnico in task.tecnicos.all():
+                Informe.objects.get_or_create(task=task, usuario=tecnico, defaults={
+                    'area': task.area
+                })
             return Response(serializer.data)  
         return Response(serializer.errors, status=400)  
 
@@ -46,8 +52,7 @@ class ClasificacionViewSet(viewsets.ModelViewSet):
             # Crear informes vacíos si se han asignado técnicos nuevos
             for tecnico in task.tecnicos.all():
                 Informe.objects.get_or_create(task=task, usuario=tecnico, defaults={
-                    'area': task.area,
-                    'status': 'Pendiente'  # Status por defecto
+                    'area': task.area
                 })
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
