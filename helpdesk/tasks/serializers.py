@@ -48,6 +48,7 @@ class TaskSerializer(serializers.ModelSerializer):
            'clasificacion_tema': tarea.clasificacion.clasificacion if tarea.clasificacion != None else 'Sin clasificación',
            'reportes': [
                {
+                   'id_ticket': tarea.id,
                    'id': informe.id,
                    'area': informe.area.id,
                    'usuario': informe.usuario.id,
