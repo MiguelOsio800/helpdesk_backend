@@ -1,6 +1,7 @@
 from rest_framework import serializers  
 from .models import Task, Prioridad, Status, Clasificacion  
 from usuarios.models import Usuario  # Asegúrate de que esta línea apunte a la ubicación correcta  
+from reporte.models import Informe  # Importar el modelo Informe
 
 class PrioridadSerializer(serializers.ModelSerializer):  
     class Meta:  
@@ -45,7 +46,18 @@ class TaskSerializer(serializers.ModelSerializer):
            'fecha_final': tarea.fecha_final,
            'clasificacion': tarea.clasificacion.id if tarea.clasificacion != None else None,
            'clasificacion_tema': tarea.clasificacion.clasificacion if tarea.clasificacion != None else 'Sin clasificación',
-           'reporte': 'pendiente por miguel'
+           'reportes': [
+               {
+                   'id': informe.id,
+                   'area': informe.area.id,
+                   'usuario': informe.usuario.id,
+                   'equipo': informe.equipo,
+                   'numero_de_bien': informe.numero_de_bien,
+                   'solucion': informe.solucion,
+                   'observacion': informe.observacion,
+                   'completado': informe.completado
+               } for informe in Informe.objects.filter(task=tarea)
+           ]
        }
     class Meta:  
         model = Task  
