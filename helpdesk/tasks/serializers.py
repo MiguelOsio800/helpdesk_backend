@@ -37,12 +37,9 @@ class TaskSerializer(serializers.ModelSerializer):
            'area_nombre': tarea.area.nombre,
            'usuario': tarea.usuario.id,
            'usuario_nombre': tarea.usuario.first_name,
-           'tecnicos': [
-               {
-                   'id': tecnico.id,
-                   'nombre_completo': f"{tecnico.first_name} {tecnico.last_name}"
-               } for tecnico in tarea.tecnicos.all()
-           ],
+            'tecnicos': [
+            f"{tecnico.first_name} {tecnico.last_name}" for tecnico in tarea.tecnicos.all()
+            ],
            'status': tarea.status.id,
            'status_nombre': tarea.status.estado,
            'prioridad': tarea.prioridad.id if tarea.prioridad != None else None,
