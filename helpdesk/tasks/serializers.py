@@ -1,6 +1,6 @@
 from rest_framework import serializers  
 from .models import Task, Prioridad, Status, Clasificacion  
-from usuarios.models import Usuario  # Asegúrate de que esta línea apunte a la ubicación correcta  
+from usuarios.models import Usuario  
 from informes.models import Informe
 
 class PrioridadSerializer(serializers.ModelSerializer):  
@@ -19,7 +19,7 @@ class ClasificacionSerializer(serializers.ModelSerializer):
         fields = '__all__'  
 
 class TaskSerializer(serializers.ModelSerializer):  
-    area_nombre = serializers.CharField(source='area.nombre', read_only=True)  # Solo para la representación  
+    area_nombre = serializers.CharField(source='area.nombre', read_only=True)  
     usuario_nombre = serializers.CharField(source='usuario.first_name', read_only=True)  
     status_nombre = serializers.CharField(source='status.estado', read_only=True)  
     prioridad_nombre = serializers.CharField(source='prioridad.nivel', read_only=True)  
@@ -37,7 +37,12 @@ class TaskSerializer(serializers.ModelSerializer):
            'area_nombre': tarea.area.nombre,
            'usuario': tarea.usuario.id,
            'usuario_nombre': tarea.usuario.first_name,
-           'tecnicos': [tecnico.id for tecnico in tarea.tecnicos.all()],
+           'tecnicos': [
+               {
+                   'id': tecnico.id,
+                   'nombre_completo': f"{tecnico.first_name} {tecnico.last_name}"
+               } for tecnico in tarea.tecnicos.all()
+           ],
            'status': tarea.status.id,
            'status_nombre': tarea.status.estado,
            'prioridad': tarea.prioridad.id if tarea.prioridad != None else None,
