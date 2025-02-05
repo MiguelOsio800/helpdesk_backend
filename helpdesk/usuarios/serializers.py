@@ -27,10 +27,14 @@ class RolSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):  
     rol_nombre = serializers.CharField(source='rol.nombre', read_only=True)  # Campo solo de lectura para el nombre del rol asociado  
     password = serializers.CharField(write_only=True)  # Campo para la contraseña, solo escribible  
+    full_name = serializers.SerializerMethodField()  # Campo para el nombre completo  
 
     class Meta:  
         model = Usuario  # Modelo que se va a serializar  
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'rol', 'rol_nombre', 'password', 'area']  # Solo incluye los campos que solicitaste  
+        fields = ['id', 'username', 'first_name', 'last_name', 'full_name', 'email', 'rol', 'rol_nombre', 'password', 'area']  # Agregamos 'full_name'  
+  
+    def get_full_name(self, obj):  # Método para obtener el nombre completo  
+        return f"{obj.first_name} {obj.last_name}"  
 
     def create(self, validated_data):  
         # Este método permite crear el usuario y establecer la contraseña de manera segura  
